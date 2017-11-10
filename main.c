@@ -379,7 +379,7 @@ void seleccionar_ubicacion_porcentajes(int posicion){
                         printf("\t Código: %s\n",pubicacion->codigo);
                         int porcentaje_entradas, porcentaje_entradas_concierto, porcentaje_entradas_concierto_total; 
                         porcentaje_entradas = (pubicacion->cupos - pubicacion->entradas_disponibles) * 100 / pubicacion->cupos;
-                        printf("\t Total de tickets vendidos: %d\n",(pubicacion->cupos - pubicacion->entradas_disponibles);
+                        printf("\t Total de tickets vendidos: %d\n",(pubicacion->cupos - pubicacion->entradas_disponibles));
                         printf("\t Recaudación de ubicación: %.2f\n\n",pubicacion->recaudacion);
                         printf("\t Porcentaje de entradas vendidas de la localidad: %d %% \n",porcentaje_entradas);
                         porcentaje_entradas_concierto = (pubicacion->cupos - pubicacion->entradas_disponibles) * 100 / entradas_totales_concierto;
