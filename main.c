@@ -38,6 +38,29 @@ void mostrar_conciertos(){
     }
 }
 
+// Muestra toda la información de los conciertos y todas sus ubicaciones
+void mostrar_conciertos_ubicaciones(){
+    int i,j;
+    pconcierto = &conciertos[0];
+    for(i=0; i < 3; i++){
+        printf("====================================");
+        printf("\nNombre: %s\n",pconcierto->nombre);
+        printf("Codigo: %s\n",pconcierto->codigo);
+        pubicacion = &pconcierto->ubicaciones[0];
+        printf("Ubicaciones:\n");
+        for(j=0; j < pconcierto->cant_ubicaciones ;j++){
+            printf("\t Nombre: %s\n",pubicacion->nombre);
+            printf("\t Código: %s\n",pubicacion->codigo);
+            printf("\t Precio: %.2f\n",pubicacion->valor);
+            printf("\t Entradas Disponibles: %d\n",pubicacion->entradas_disponibles);
+            printf("\t Cupos de ubicación: %d\n",pubicacion->cupos);
+            printf("\t Recaudación: %.2f\n\n",pubicacion->recaudacion);
+            pubicacion++;
+        }
+        pconcierto++;
+    }
+}
+
 void cargar_conciertos(){
     pconcierto = &conciertos[0];
     // Cargar Retro Concert
@@ -109,29 +132,6 @@ void cargar_conciertos(){
     pubicacion->cupos = 5000;
     pubicacion->recaudacion = 0.00;
     mostrar_conciertos_ubicaciones();
-}
-
-// Muestra toda la información de los conciertos y todas sus ubicaciones
-void mostrar_conciertos_ubicaciones(){
-    int i,j;
-    pconcierto = &conciertos[0];
-    for(i=0; i < 3; i++){
-        printf("====================================");
-        printf("\nNombre: %s\n",pconcierto->nombre);
-        printf("Codigo: %s\n",pconcierto->codigo);
-        pubicacion = &pconcierto->ubicaciones[0];
-        printf("Ubicaciones:\n");
-        for(j=0; j < pconcierto->cant_ubicaciones ;j++){
-            printf("\t Nombre: %s\n",pubicacion->nombre);
-            printf("\t Código: %s\n",pubicacion->codigo);
-            printf("\t Precio: %.2f\n",pubicacion->valor);
-            printf("\t Entradas Disponibles: %d\n",pubicacion->entradas_disponibles);
-            printf("\t Cupos de ubicación: %d\n",pubicacion->cupos);
-            printf("\t Recaudación: %.2f\n\n",pubicacion->recaudacion);
-            pubicacion++;
-        }
-        pconcierto++;
-    }
 }
 
 // Muestra la información de las ubicaciones de 1 concierto
@@ -218,7 +218,7 @@ void seleccionar_ubicacion_devolver_ticket(int posicion){
                 pubicacion++;
             }
             printf("%d) Volver.\n",pconcierto->cant_ubicaciones+1);
-            printf("\n Ingrese el numero del ubicación que desea devolver tickets, ó %d para salir.",pconcierto->cant_ubicaciones+1,pconcierto->codigo);
+            printf("\n Ingrese el numero del ubicación que desea devolver tickets, ó %d para salir.",pconcierto->cant_ubicaciones+1);
             scanf("%d",&opc_ubicacion);
             if(opc_ubicacion==pconcierto->cant_ubicaciones+1){
                 return;
@@ -317,8 +317,112 @@ void devolucion_tickets() {
     };
 }
 
-void ventas_x_conciertos() {}
-void ventas_x_localidad() {}
+void ventas_x_conciertos() {
+    int i,j;
+    pconcierto = &conciertos[0];
+    for(i=0; i < 3; i++){
+        printf("====================================");
+        printf("\nNombre: %s\n",pconcierto->nombre);
+        printf("Codigo: %s\n",pconcierto->codigo);
+        pubicacion = &pconcierto->ubicaciones[0];
+        printf("Localidades:\n");
+        for(j=0; j < pconcierto->cant_ubicaciones ;j++){
+            printf("\t Nombre: %s\n",pubicacion->nombre);
+            printf("\t Código: %s\n",pubicacion->codigo);
+            printf("\t Entradas Vendidas: %d\n",pubicacion->cupos - pubicacion->entradas_disponibles);
+            printf("\t Recaudación: %.2f\n\n",pubicacion->recaudacion);
+            pubicacion++;
+        }
+        pconcierto++;
+    }
+}
+
+void seleccionar_ubicacion_porcentajes(int posicion){
+    int i,j;
+    pconcierto = &conciertos[0];
+    int opc_ubicacion;
+    int cant_tickets;
+    for(i=1; i <= 3; i++){
+        if(i==posicion){
+            int recaudacion_concierto=0;
+            int entradas_totales_concierto=0;
+            int entradas_vendidas_concierto=0;    
+            printf("====================================");
+            printf("\nNombre: %s\n",pconcierto->nombre);
+            printf("Codigo: %s\n",pconcierto->codigo);
+            pubicacion = &pconcierto->ubicaciones[0];
+            printf("Ubicaciones:\n");
+            for(j=0; j < pconcierto->cant_ubicaciones ;j++){
+                printf("%d\t Nombre: %s\n",j+1,pubicacion->nombre);
+                printf("\t Código: %s\n",pubicacion->codigo);
+                printf("\t Precio: %.2f\n",pubicacion->valor);
+                printf("\t Entradas Disponibles: %d\n",pubicacion->entradas_disponibles);
+                printf("\t Cupos de ubicación: %d\n",pubicacion->cupos);
+                printf("\t Recaudación: %.2f\n\n",pubicacion->recaudacion);
+                pubicacion++;
+                recaudacion_concierto += pubicacion->recaudacion;
+                entradas_totales_concierto += pubicacion->cupos;
+                entradas_vendidas_concierto += pubicacion->cupos - pubicacion->entradas_disponibles;
+            }
+            printf("%d) Volver.\n",pconcierto->cant_ubicaciones+1);
+            printf("\n Ingrese el numero del ubicación de la cual desea ver sus porcentajes, ó %d para salir.",pconcierto->cant_ubicaciones+1);
+            scanf("%d",&opc_ubicacion);
+            if(opc_ubicacion==pconcierto->cant_ubicaciones+1){
+                return;
+            } else if (opc_ubicacion < pconcierto->cant_ubicaciones+1) {
+                pubicacion = &pconcierto->ubicaciones[0];
+                for(j=0; j < pconcierto->cant_ubicaciones ;j++){
+                    
+                    if(j+1==opc_ubicacion){   
+                        printf("\nUsted seleccionó:\n");
+                        printf("%d\t Nombre: %s\n",j+1,pubicacion->nombre);
+                        printf("\t Código: %s\n",pubicacion->codigo);
+                        int porcentaje_entradas, porcentaje_entradas_concierto, porcentaje_entradas_concierto_total; 
+                        porcentaje_entradas = (pubicacion->cupos - pubicacion->entradas_disponibles) * 100 / pubicacion->cupos;
+                        printf("\t Total de tickets vendidos: %d\n",(pubicacion->cupos - pubicacion->entradas_disponibles);
+                        printf("\t Recaudación de ubicación: %.2f\n\n",pubicacion->recaudacion);
+                        printf("\t Porcentaje de entradas vendidas de la localidad: %d %% \n",porcentaje_entradas);
+                        porcentaje_entradas_concierto = (pubicacion->cupos - pubicacion->entradas_disponibles) * 100 / entradas_totales_concierto;
+                        printf("\t Porcentaje de entradas vendidas de esta localidad con respecto al concierto: %d %% \n",porcentaje_entradas_concierto);
+                        porcentaje_entradas_concierto_total = entradas_vendidas_concierto * 100 / entradas_totales_concierto;
+                        printf("\t Porcentaje de entradas vendidas del concierto: %d %% \n",porcentaje_entradas_concierto_total);
+                    }
+                    pubicacion++;
+                }
+            } else {
+                mensaje_error();
+                return;
+            }
+        }
+        pconcierto++;
+    }
+}
+
+void ventas_x_localidad() {
+    int opc = 0;
+    while( opc != 4 ){
+        mostrar_conciertos();
+        printf("4) Volver al menú principal. \n");
+        printf("\n Ingrese el numero del concierto que desea ver sus ubicaciones, ó 4 para salir.");
+        scanf("%d",&opc);
+        switch(opc){
+            case 1:
+                seleccionar_ubicacion_porcentajes(opc);
+                break;
+            case 2:
+                seleccionar_ubicacion_porcentajes(opc);
+                break;
+            case 3:
+                seleccionar_ubicacion_porcentajes(opc);
+                break;
+            case 4: 
+                break;
+            default:
+                mensaje_error();
+                break;
+        }
+    }
+}
 
 int main(){
     cargar_conciertos();
