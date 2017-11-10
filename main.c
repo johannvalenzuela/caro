@@ -22,6 +22,22 @@ struct concierto{
 struct ubicacion *pubicacion;
 struct concierto conciertos[4], *pconcierto;
 
+void mensaje_error(){
+    printf("\n\nERROR: Ingrese una opción válida.\n\n");
+}
+
+// Muestra solamente la información de los conciertos
+void mostrar_conciertos(){
+    int i;
+    pconcierto = &conciertos[0];
+    for(i=0; i < 3; i++){
+        printf("====================================");
+        printf("\n%d)Nombre: %s\n",i+1,pconcierto->nombre);
+        printf("\tCodigo: %s\n",pconcierto->codigo);
+        pconcierto++;
+    }
+}
+
 void cargar_conciertos(){
     pconcierto = &conciertos[0];
     // Cargar Retro Concert
@@ -118,18 +134,6 @@ void mostrar_conciertos_ubicaciones(){
     }
 }
 
-// Muestra solamente la información de los conciertos
-void mostrar_conciertos(){
-    int i,j;
-    pconcierto = &conciertos[0];
-    for(i=0; i < 3; i++){
-        printf("====================================");
-        printf("\n%d)Nombre: %s\n",i+1,pconcierto->nombre);
-        printf("\tCodigo: %s\n",pconcierto->codigo);
-        pconcierto++;
-    }
-}
-
 // Muestra la información de las ubicaciones de 1 concierto
 void seleccionar_ubicacion_agregar_ticket(int posicion){
     int i,j;
@@ -153,7 +157,7 @@ void seleccionar_ubicacion_agregar_ticket(int posicion){
                 pubicacion++;
             }
             printf("%d) Volver.\n",pconcierto->cant_ubicaciones+1);
-            printf("\n Ingrese el numero del ubicación que desea vender tickets, ó %d para salir.",pconcierto->cant_ubicaciones+1,pconcierto->codigo);
+            printf("\n Ingrese el numero del ubicación que desea vender tickets, ó %d para salir.",pconcierto->cant_ubicaciones+1);
             scanf("%d",&opc_ubicacion);
             if(opc_ubicacion==pconcierto->cant_ubicaciones+1){
                 return;
@@ -315,10 +319,6 @@ void devolucion_tickets() {
 
 void ventas_x_conciertos() {}
 void ventas_x_localidad() {}
-
-void mensaje_error(){
-    printf("\n\nERROR: Ingrese una opción válida.\n\n");
-}
 
 int main(){
     cargar_conciertos();
